@@ -17,7 +17,7 @@ body{background-color: black; width: 360px;}
 #ul a:hover {color: #df0606;}
 
 #conteiner_rf2{border: solid 2px white none; width:90%; height:30%; cursor: pointer; background-image: url(rf2.webp); background-position: center; background-repeat: no-repeat;
-             background-size: contain;  transition: 0.5s; margin-top: 35px;  position: absolute;}
+             background-size: contain;  transition: 0.5s; margin-top: 65px;  position: absolute;}
 
 #conteiner_acc{border: solid 2px red none; width:90%; height:30%;
            margin-top: 180px; cursor: pointer; background-image: url(acc.jpg); background-position: center; background-repeat: no-repeat;
