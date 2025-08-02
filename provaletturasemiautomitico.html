@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Risultati Gara prova semiautomatica</title>
+</head>
+<body>
+   
+  <a href="index.html"><button>HOME</button></a>
+  <h1>📊 Risultati della Gara</h1>
+  <div id="results"></div>
+  <style>
+  body{color: white; background-color: black;}
+  #classifica{border: solid 2px red none; }
+  .position{ font-weight: bold;
+  margin-right: 2px; /* aumenta lo spazio */
+  margin-bottom: 5px;
+  border: solid 2px white;
+  background-color: red; border-radius:5px 1px 5px 1px ;
+  display: inline-block; /* per avere più controllo sullo spacing */
+  min-width: 25px; /* se vuoi allineare i numeri in colonna */
+  text-align: center;}
+
+  .name{color:white;}
+  </style>
+
+<script>
+  fetch('files.json')
+    .then(res => res.json())
+    .then(files => {
+      const container = document.getElementById('results');
+      container.innerHTML = '';
+
+      files.forEach(filename => {
+        fetch(filename)
+          .then(res => res.json())
+          .then(data => {
+            // Qui chiami la funzione che visualizza i risultati di ogni gara
+            container.innerHTML += `<h3>Risultati di ${filename}</h3>`;
+            
+            data.sessionResult.leaderBoardLines.forEach(pilota => {
+              container.innerHTML += `
+                <div id=classifica>
+                 <span class="position"> ${pilota.position}</span>
+                  <span class="name">${pilota.driverName}</span> 
+                   bestLap:${pilota.bestLapTime}
+                   gap ${pilota.gap}
+                </div>
+              `;
+            });
+
+            container.innerHTML += '<hr>';
+          })
+         
+      });
+    });
+</script>
