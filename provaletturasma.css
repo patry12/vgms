@@ -1,0 +1,24 @@
+ 
+   body{background-color: black; max-width:500px; max-height: 500px; color: aliceblue;}
+    #table{border: solid 2px rgb(0, 255, 13) none; max-width: 360px; 
+        max-height: auto; border-collapse: collapse;}
+    /*.tro{border: solid 52px rgb(250, 3, 3); width: 150px; height: 150px; margin-bottom: 25px; color: white;}*/
+   
+    .posizione{border: solid 3px rgb(234, 234, 240) ; height:18px; width:15px; display:flex; border-radius: 5px 0px 0px 0px;
+                color: white; background-color: rgb(255, 0, 0); overflow: hidden; padding: 0px; margin: 0px;
+                font-size:20px; justify-content:center; justify-items: center; font-size:large; font-weight:bold;}
+    
+    
+ .name{border: solid 3px rgb(234, 234, 240) none ;color: white; font-family: 'Times New Roman', Times, serif;
+  font-weight: bold; font-size:100%; background-color: red; justify-content: center;}
+
+
+
+      .best{border: solid 3px rgb(234, 234, 240) none ;color: white; font-family: 'Times New Roman', Times, serif;
+  font-weight: bold; font-size:100%; background-color: red; justify-content: center;}
+
+
+       .gap{border: solid 3px rgb(234, 234, 240) none ;color: white; font-family: 'Times New Roman', Times, serif;
+  font-weight: bold; font-size:100%; background-color: red; justify-content: center;}
+
+    

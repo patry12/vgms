@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Risultati Gara prova semiautomatica</title>
+  <link rel="stylesheet" href="provaletturasma.css"> <!-- Collegamento CSS -->
+ </head>
+<body>
+   
+  <a href="index.html"><button>HOME</button></a>
+  <h1> Risultati della Gara</h1>
+  <div id="results">
+     <table id="table"> 
+        <tr>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+        </tr>
+       
+    </table>
+
+  </div>
+
+
+<script>
+  fetch('files.json')
+    .then(res => res.json())
+    .then(files => {
+      const container = document.getElementById('results');
+      container.innerHTML = '';
+
+      files.forEach(filename => {
+        fetch(filename)
+          .then(res => res.json())
+          .then(data => {
+            // Qui chiami la funzione che visualizza i risultati di ogni gara
+            container.innerHTML += ` ${filename}`;
+            
+            data.sessionResult.leaderBoardLines.forEach(pilota => {
+              container.innerHTML += `
+              <div>
+                <table> 
+                  <tr>
+                <td class="posizione">${pilota.position}</td>
+                <td class="name"> ${pilota.driverName}</td>
+                <td class ="best">${pilota.bestLapTime}</td>
+                <td class ="gap"> ${pilota.gap}</td>
+                </tr>
+              `;
+            });
+
+            container.innerHTML += '';
+          })
+         
+      });
+    });
+</script>
+</body>
+</html>
