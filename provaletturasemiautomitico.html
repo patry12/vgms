@@ -39,13 +39,14 @@
             
             data.sessionResult.leaderBoardLines.forEach(pilota => {
               container.innerHTML += `
-              <div>
-                <table> 
+              <div id="results">
+                <table id="table"> 
                   <tr>
                 <td class="posizione">${pilota.position}</td>
                 <td class="name"> ${pilota.driverName}</td>
-                <td class ="best">${pilota.bestLapTime}</td>
-                <td class ="gap"> ${pilota.gap}</td>
+                <td class ="best">bestLap    ${pilota.bestLapTime}</td>
+                <td class ="gap"> gap  + ${pilota.gap}</td>
+                <td class ="laps">  Laps  ${pilota.laps}</td>
                 </tr>
               `;
             });
