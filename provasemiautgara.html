@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Classifica F1</title>
+ 
+ <style>
+   
+  body {
+  background: #222;
+  font-family: Arial, sans-serif;
+  color: white;
+  margin-left: 0;
+  padding: 0;
+}
+ 
+  .row {
+    border: solid 2px red;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    font-family: sans-serif;
+    margin-left: 0px;
+  }
+
+  .pos {
+    background-color: red;
+    border: solid 2px white;
+    width: 30px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .driver {
+    flex: 1;
+    padding-left: 10px;
+  }
+
+  .time {
+    width: 120px;
+    text-align:start;
+    flex: 1;
+  }
+
+  .gap{
+    width: 120px;
+    text-align:start;
+    flex: 1;
+    color: red;
+  }
+  .laps{
+    width: 120px;
+    text-align:start;
+    flex: 0;
+    color: rgb(0, 162, 255);
+  }
+  
+
+  .compound {
+    background-color: #ddd;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    font-size: 0.85em;
+  }
+
+  .header {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 12px;
+    background: black;
+    border-bottom: 2px solid #999;
+  }
+
+  #leaderboard {
+    max-width: 500px;
+    margin-left:  15px;
+    margin-top: 100px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+  } 
+  
+  @media (max-width: 768px) {
+  .leaderboard {
+    width: 90vw;                  /* occupa il 90% della larghezza visibile */
+    font-size: 20px;
+    padding: 20px;
+    border-left: 8px solid red;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background-color: #000;
+  }
+
+  .header {
+    font-size: 22px;
+    text-align: left;
+    margin-bottom: 12px;
+  }
+
+  .row {
+    font-size: 20px;
+    padding: 15px;
+    margin-left: 25px;
+    display: inline-flex;
+  }
+
+  .pos {
+    width: 32px;
+    font-size: 20px;
+  }
+
+  .driver {
+    font-size: 21px;
+  }
+
+  .time {
+    font-size: 19px;
+  }
+
+  .compound {
+    font-size: 17px;
+    padding: 2px 6px;
+  }
+
+  .in-pit {
+    font-size: 18px;
+  }
+}
+
+ 
+</style>
+
+
+
+</head>
+<body>
+ <a href="index.html"><button>HOME</button></a>
+
+  <div id="leaderboard">
+    <div class="header">LAP <strong>15</strong> / 70</div>
+    <!-- Qui andrà la classifica -->
+  </div>
+
+  <script>
+    fetch('files.json')
+      .then(res => res.json())
+      .then(files => {
+        const container = document.getElementById('leaderboard');
+
+        files.forEach(filename => {
+          fetch(filename)
+            .then(res => res.json())
+            .then(data => {
+              let html = `<h3>${filename}</h3>`; // Titolo sessione (facoltativo)
+
+              data.sessionResult.leaderBoardLines.forEach(pilota => {
+                html += `
+                  <div class="row">
+                    <div class="pos">${pilota.position}</div>
+                    <div class="driver">${pilota.driverName}</div>
+                    <div class="time">${pilota.bestLapTime}</div>
+                        <div class="gap">${pilota.gap}</div>
+                         <div class="laps">${pilota.laps}</div>
+                    </div>
+                  </div>
+                `;
+              });
+
+              container.innerHTML += html;
+            });
+        });
+      });
+  </script>
+</body>
+</html>

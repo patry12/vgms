@@ -1,0 +1,33 @@
+body{background-color: black; width: 360px;}
+
+#discord{ border: solid 2px red none; width: 50px; height: 50px; background-image: url(discord.jpg); background-position: center;
+       background-repeat: no-repeat; background-size: contain; cursor: pointer;}
+
+#menu{ border: solid 2px gold none; color: white; cursor: pointer; margin-left: 15px; 
+      margin-top: 15px; width: 9%; height: 4%;  overflow: hidden;}
+
+#ul {border: solid 2px red none; cursor: pointer; margin-left:-450px; text-align: center;
+     position:relative; overflow: hidden; list-style-type: none; height:5%; transition: 0.5s;
+     width:35%; display:flex; text-decoration: none;}
+
+#ul a{ margin: 2px;
+      color: white; text-decoration: none;
+      width:55px;}
+
+#ul a:hover {color: #df0606;}
+
+#conteiner_rf2{border: solid 2px white none; width:90%; height:30%; cursor: pointer; background-image: url(rf2.webp); background-position: center; background-repeat: no-repeat;
+             background-size: contain;  transition: 0.5s; margin-top: 65px;  position: absolute;}
+
+#conteiner_acc{border: solid 2px red none; width:90%; height:30%;
+           margin-top: 180px; cursor: pointer; background-image: url(acc.jpg); background-position: center; background-repeat: no-repeat;
+           background-size: contain;
+               transition: 1.5s; display: flex; position:absolute;}
+
+#conteiner_lmu{border: solid 2px green none; width:90%; height:30%;
+             margin-top: 380px; cursor: pointer;  background-image: url(lmu.jpg); background-position: center; background-repeat: no-repeat;
+                background-size: contain;    transition: 1.5s; display: flex; position: absolute;}
+
+
+  #conteiner_end{border: solid 2px red none; color: white; height: 50px; width: 80%; cursor: pointer; text-align: center;
+     position: relative; margin-left:30px; margin-top: 1100px; font-weight: bold;}             
