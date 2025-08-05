@@ -20,6 +20,7 @@
         "bestLapTime": "1:25.000",
         "pendingStop": false,
         "gap": "0.000",
+        "car": "Mercedes_AMG_GT3",
         "gridPosition": 1,
         "penaltiesTime": 0,
         "isDisqualified": false
@@ -34,6 +35,7 @@
         "bestLapTime": "1:26.500",
         "pendingStop": false,
         "gap": "1.500",
+        "car": "ferrari_296_GT3",
         "gridPosition": 2,
         "penaltiesTime": 0,
         "isDisqualified": false

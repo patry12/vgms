@@ -12,20 +12,22 @@
   color: white;
   margin-left: 0;
   padding: 0;
+  
 }
  
   .row {
-    border: solid 2px red;
+    border: solid 2px red none;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: start;
     padding: 6px 12px;
     font-family: sans-serif;
     margin-left: 0px;
+    gap: 10px;
+  
   }
 
   .pos {
-    background-color: red;
+    background-color: red ;
     border: solid 2px white;
     width: 30px;
     font-weight: bold;
@@ -33,31 +35,44 @@
   }
 
   .driver {
-    flex: 1;
-    padding-left: 10px;
+    border: solid 2px gold none;
+    width: 150px;
+   padding-left: 0px;
   }
 
   .time {
-    width: 120px;
+    border: solid 2px red none;
+    width:auto;
     text-align:start;
-    flex: 1;
+    padding-left:0px;
+    
   }
 
   .gap{
-    width: 120px;
+     border: solid 2px red none;
+    width:60px;
     text-align:start;
-    flex: 1;
-    color: red;
+   color: red;
   }
   .laps{
+     border: solid 2px red none;
     width: 120px;
     text-align:start;
     flex: 0;
     color: rgb(0, 162, 255);
   }
+
+   .car{
+    border: solid 2px gold none ;
+    overflow: hidden;
+    width: 250px;
+    text-align:start;
+    color: rgb(241, 241, 241);
+  }
   
 
   .compound {
+     border: solid 2px red none;
     background-color: #ddd;
     padding: 2px 6px;
     border-radius: 4px;
@@ -74,13 +89,19 @@
   }
 
   #leaderboard {
-    max-width: 500px;
+    max-width: auto;
+    max-height: auto;
     margin-left:  15px;
     margin-top: 100px;
     border: 1px solid #ccc;
     border-radius: 8px;
     overflow: hidden;
-  } 
+   } .namerace{
+    border: solid 2px red none;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bolder;
+   } 
   
  /* @media (max-width: 768px) {
   .leaderboard {
@@ -154,7 +175,7 @@
           fetch(filename)
             .then(res => res.json())
             .then(data => {
-              let html = `<h3>${filename}</h3>`; // Titolo sessione (facoltativo)
+              let html = `<h3 class="namerace">${filename}</h3>`; // Titolo sessione (facoltativo)
 
               data.sessionResult.leaderBoardLines.forEach(pilota => {
                 html += `
@@ -162,8 +183,9 @@
                     <div class="pos">${pilota.position}</div>
                     <div class="driver">${pilota.driverName}</div>
                     <div class="time">${pilota.bestLapTime}</div>
-                        <div class="gap">${pilota.gap}</div>
-                         <div class="laps">${pilota.laps}</div>
+                        <div class="gap"> +${pilota.gap}</div>
+                         <div class="laps"> laps${pilota.laps}</div>
+                          <div class="car">${pilota.car}</div>
                     </div>
                   </div>
                 `;
