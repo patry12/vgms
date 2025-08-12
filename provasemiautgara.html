@@ -8,6 +8,7 @@
    
   body {
   background: #222;
+  width: auto;
   font-family: Arial, sans-serif;
   color: white;
   margin-left: 0;
@@ -84,7 +85,7 @@
     font-size: 18px;
     font-weight: bold;
     padding: 10px 12px;
-    background: black;
+    background: rgb(255, 0, 0);
     border-bottom: 2px solid #999;
   }
 
@@ -97,11 +98,18 @@
     border-radius: 8px;
     overflow: hidden;
    } .namerace{
-    border: solid 2px red none;
+    border: solid 2px red ;
     text-align: center;
     font-size: 20px;
     font-weight: bolder;
    } 
+   .servernome{color: #ccc; width: 10vh;
+     text-align: center; display: inline;
+  border: solid 2px gold ; margin-left: 2%; position: absolute; margin-top: -50px;}
+.trackName{border: solid 2px blue none; width: 10%; overflow: hidden;}
+.sessiontype{border: solid 2px white none; width: 10%; position:absolute; overflow: hidden; display: inline;}
+  .penalty{border: solid 2px green none; text-align: center; color: orange;
+    position: absolute; width: 115px; height: 20px; margin-left:60%; overflow: hidden;}
   
  /* @media (max-width: 768px) {
   .leaderboard {
@@ -161,7 +169,8 @@
  <a href="index.html"><button>HOME</button></a>
 
   <div id="leaderboard">
-    <div class="header">LAP <strong>15</strong> / 70</div>
+    <div class="header"></div>
+    <div class=""></div>
     <!-- Qui andrà la classifica -->
   </div>
 
@@ -175,20 +184,33 @@
           fetch(filename)
             .then(res => res.json())
             .then(data => {
-              let html = `<h3 class="namerace">${filename}</h3>`; // Titolo sessione (facoltativo)
-
-              data.sessionResult.leaderBoardLines.forEach(pilota => {
+              let html = `<h3 class="namerace">${filename}</h3> 
+              <h3 class="sessiontype">${data.sessionType}</h3>
+               <h3 class="serverName">${data.serverName}</h3> `;
+            
+            
+                data.sessionResult.leaderBoardLines.forEach(pilota => {
                 html += `
                   <div class="row">
+              
                     <div class="pos">${pilota.position}</div>
                     <div class="driver">${pilota.driverName}</div>
                     <div class="time">${pilota.bestLapTime}</div>
                         <div class="gap"> +${pilota.gap}</div>
                          <div class="laps"> laps${pilota.laps}</div>
                           <div class="car">${pilota.car}</div>
-                    </div>
-                  </div>
-                `;
+                          <div class="penalty">+${pilota.penaltiesTime} s penalty </div>
+                           </div>
+                 `;
+                 
+                  /* if (pilota.penaltiesTime > 0) {
+    html += `<div class="penalty">+${pilota.penaltiesTime}s penalty </div>`;
+  }
+*/
+
+                 
+    
+ 
               });
 
               container.innerHTML += html;
