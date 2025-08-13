@@ -90,6 +90,13 @@
       "penaltyType": "driveThrough",
       "timePenalty": 30,
       "reason": "Track limits"
+    },
+    {
+      "driverName": "patrizio caperna",
+      "carId": 4,
+      "penaltyType": "stopAndGo",
+      "timePenalty": 30,
+      "reason": "Track limits"
     }
   ]
 }
