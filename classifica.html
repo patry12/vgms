@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>classificacampionato</title>
+  <link rel="stylesheet" href="classifica.css" />
+</head>
+<body>
+  <a href="index.html"><button id="home"> HOME</button></a>
+    <a href="provasemiautgara.html"><button id="race"> RACE</button></a>
+  <div id="titolopg">CLASSIFICA  CAMPIONATO</div>
+  <div id="classifica-container"></div>
+
+  <script>
+    const puntirace = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
+    const classificacampionato = {};
+
+    fetch('files.json') // Contiene un array di file JSON
+      .then(res => res.json())
+      .then(files => {
+        return Promise.all(
+          files.map(filename =>
+            fetch(filename)
+              .then(res => res.json())
+          )
+        );
+      })
+      .then(dataGare => {
+        dataGare.forEach(data => {
+          data.sessionResult.leaderBoardLines.forEach(pilota => {
+            const nome = pilota.driverName;
+            const posizione = pilota.position;
+            const punti = puntirace[posizione - 1] || 0;
+            classificacampionato[nome] = (classificacampionato[nome] || 0) + punti;
+          });
+        });
+
+        const classificaOrdinata = Object.entries(classificacampionato)
+          .sort((a, b) => b[1] - a[1]);
+
+        let html = "";
+        classificaOrdinata.forEach(([nome, punti], index) => {
+          
+           html += `
+            <div class="tab">
+            <div class="posizione">${index + 1}</div>
+            <div class="nome">${nome}</div>
+            <div class="punti">${punti}</div>
+               </div>
+                  `;
+
+          
+          console.log(`${index + 1}. ${nome}: ${punti} punti`);
+        });
+
+        document.getElementById("classifica-container").innerHTML = html;
+      })
+      .catch(err => {
+        console.error("Errore nel caricamento dati:", err);
+      });
+  </script>
+</body>
+</html>
