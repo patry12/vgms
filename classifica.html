@@ -3,62 +3,100 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>classificacampionato</title>
+  <title>Classifica Campionato</title>
   <link rel="stylesheet" href="classifica.css" />
+  <style>
+    .pilota-info {
+      border-top: 1px solid #ccc;
+      margin-top: 20px; color: gold;
+      padding: 15px;
+      background-color:black;
+    }
+    .pilota-info h3 {
+      margin: 0 0 10px;
+      font-size: medium; color: rgb(255, 249, 249);
+    }
+    .pilota-info .close-btn {
+      float: right;
+      cursor: pointer;
+      font-weight: bold;
+      color: gold;
+    }
+  </style>
 </head>
 <body>
   <a href="index.html"><button id="home"> HOME</button></a>
-    <a href="provasemiautgara.html"><button id="race"> RACE</button></a>
-  <div id="titolopg">CLASSIFICA  CAMPIONATO</div>
+  <a href="provasemiautgara.html"><button id="race"> RACE</button></a>
+  <div id="titolopg">CLASSIFICA CAMPIONATO</div>
   <div id="classifica-container"></div>
+  <div id="info-pilota-container"></div>
 
   <script>
     const puntirace = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
     const classificacampionato = {};
 
-    fetch('files.json') // Contiene un array di file JSON
+    fetch('files.json')
       .then(res => res.json())
-      .then(files => {
-        return Promise.all(
-          files.map(filename =>
-            fetch(filename)
-              .then(res => res.json())
-          )
-        );
-      })
+      .then(files => Promise.all(files.map(f => fetch(f).then(r => r.json()))))
       .then(dataGare => {
         dataGare.forEach(data => {
           data.sessionResult.leaderBoardLines.forEach(pilota => {
-            const nome = pilota.driverName;
-            const posizione = pilota.position;
+            const nome = pilota.driverName.trim();
+            const posizione = parseInt(pilota.position);
             const punti = puntirace[posizione - 1] || 0;
-            classificacampionato[nome] = (classificacampionato[nome] || 0) + punti;
+
+            if (!classificacampionato[nome]) {
+              classificacampionato[nome] = { punti: 0, gare: 0, vittorie: 0, podi: 0 };
+            }
+
+            classificacampionato[nome].punti += punti;
+            classificacampionato[nome].gare += 1;
+            if (posizione === 1) classificacampionato[nome].vittorie += 1;
+            if (posizione <= 3) classificacampionato[nome].podi += 1;
           });
         });
 
         const classificaOrdinata = Object.entries(classificacampionato)
-          .sort((a, b) => b[1] - a[1]);
+          .sort((a, b) => b[1].punti - a[1].punti);
 
         let html = "";
-        classificaOrdinata.forEach(([nome, punti], index) => {
-          
-           html += `
+        classificaOrdinata.forEach(([nome, stats], index) => {
+          html += `
             <div class="tab">
-            <div class="posizione">${index + 1}</div>
-            <div class="nome">${nome}</div>
-            <div class="punti">${punti}</div>
-               </div>
-                  `;
-
-          
-          console.log(`${index + 1}. ${nome}: ${punti} punti`);
+              <div class="posizione">${index + 1}</div>
+              <div class="nome">${nome}</div>
+              <div class="punti">${stats.punti}</div>
+              <button class="info-btn" onclick='mostraInfo("${encodeURIComponent(nome)}")'>Info</button>
+            </div>
+          `;
         });
-
         document.getElementById("classifica-container").innerHTML = html;
       })
-      .catch(err => {
-        console.error("Errore nel caricamento dati:", err);
-      });
+      .catch(err => console.error("Errore nel caricamento dati:", err));
+
+    function mostraInfo(encodedNome) {
+      const nome = decodeURIComponent(encodedNome);
+      const pilota = classificacampionato[nome];
+      const container = document.getElementById('info-pilota-container');
+      container.innerHTML = ""; // reset
+
+      if (pilota) {
+        const div = document.createElement('div');
+        div.className = 'pilota-info';
+        div.innerHTML = `
+          <span class="close-btn" onclick="this.parentElement.remove()">&times;</span>
+          <h3>${nome}</h3>
+          <p>Gare disputate: ${pilota.gare}</p>
+          <p>Punti: ${pilota.punti}</p>
+          <p>Vittorie: ${pilota.vittorie}</p>
+          <p>Podi: ${pilota.podi}</p>
+          
+        `;
+        container.appendChild(div);
+      } else {
+        container.innerHTML = "<p class='pilota-info'><em>Dati pilota non trovati.</em></p>";
+      }
+    }
   </script>
 </body>
 </html>
