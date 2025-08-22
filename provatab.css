@@ -70,5 +70,12 @@
 .homebtn{color: white;
 border: solid 2px gold;
 margin-left: 15px;
+text-decoration: none;
 margin-top: 15px;
+border-radius:25px;
+font-size: small;
+width: 50px;
+text-align: center;
+height: 15px;
+padding: 0px;
 position: absolute;}

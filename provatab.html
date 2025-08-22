@@ -11,7 +11,9 @@
 
     <a href="index.html" class="homebtn">HOME</a>
 
-  <h1>Risultati di Gara server On-line Monza - Piloti</h1>
+  <h1 id="sessionTitle">Sessione</h1>
+<h2 id="serverName">Server</h2>
+
 
   <table id="resultsTable">
     <thead>
@@ -44,16 +46,24 @@
       .then(res => res.json())
       .then(data => {
         
+
+        document.getElementById('sessionTitle').textContent = `Sessione: ${data.sessionType} - ${data.trackName}`;
+        document.getElementById('serverName').textContent = `Server: ${data.serverName}`;
+
         const tbody = document.querySelector('#resultsTable tbody');
         const entries = data.sessionResult.leaderBoardLines;
+
+         
 
         entries.forEach((entry, index) => {
           const driver = entry.currentDriver;
           const timing = entry.timing;
           const car = entry.car;
+          
 
           const row = document.createElement('tr');
           row.innerHTML = `
+           
             <td class="position">${index + 1}</td>
             <td>${driver.firstName.charAt(0)}. ${driver.lastName}</td>
             <td>${car.raceNumber}</td>
