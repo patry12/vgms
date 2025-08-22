@@ -3,197 +3,135 @@
 <head>
   <meta charset="UTF-8">
   <title>Classifica F1</title>
+  <style>
+    body {
+      background: #222;
+      font-family: Arial, sans-serif;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
 
- 
- <style>
-   
-  body {
-  background: #222;
-  width: auto;
-  font-family: Arial, sans-serif;
-  color: white;
-  margin-left: 0;
-  padding: 0;
-  
-}
- 
-  .row {
-    border: solid 2px red none;
-    display: flex;
-    align-items: start;
-    padding: 6px 12px;
-    font-family: sans-serif;
-    margin-left: 0px;
-    gap: 10px;
-  
-  }
+    .row {
+      display: flex;
+      align-items: start;
+      padding: 6px 12px;
+      gap: 10px;
+    }
 
-  .pos {
-    background-color: red ;
-    border: solid 2px white;
-    width: 30px;
-    font-weight: bold;
-    text-align: center;
-  }
+    .pos {
+      background-color: red;
+      border: 2px solid white;
+      width: 30px;
+      font-weight: bold;
+      text-align: center;
+    }
 
-  .driver {
-    border: solid 2px gold none;
-    width: 150px;
-   padding-left: 0px;
-  }
+    .driver {
+      width: 150px;
+    }
 
-  .time {
-    border: solid 2px red none;
-    width:auto;
-    text-align:start;
-    padding-left:0px;
-    
-  }
+    .time {
+      width: auto;
+      text-align: start;
+    }
 
-  .gap{
-     border: solid 2px red none;
-    width:60px;
-    text-align:start;
-   color: red;
-  }
-  .laps{
-     border: solid 2px red none;
-    width: 120px;
-    text-align:start;
-    flex: 0;
-    color: rgb(0, 162, 255);
-  }
+    .gap {
+      width: 60px;
+      text-align: start;
+      color: red;
+    }
 
-   .car{
-    border: solid 2px gold none ;
-    overflow: hidden;
-    width: 250px;
-    text-align:start;
-    color: rgb(241, 241, 241);
-  }
-  
+    .laps {
+      width: 120px;
+      text-align: start;
+      color: rgb(0, 162, 255);
+    }
 
-  .compound {
-     border: solid 2px red none;
-    background-color: #ddd;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-left: 6px;
-    font-size: 0.85em;
-  }
+    .car {
+      width: 250px;
+      text-align: start;
+      color: rgb(241, 241, 241);
+    }
 
-  .header {
-    font-size: 18px;
-    font-weight: bold;
-    padding: 10px 12px;
-    background: rgb(255, 0, 0);
-    border-bottom: 2px solid #999;
-  }
+    .penalty {
+      color: orange;
+      width: 145px;
+      margin-left: auto;
+    }
 
-  #leaderboard {
-    max-width: auto;
-    max-height: auto;
-    margin-left:  15px;
-    margin-top: 100px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    overflow: hidden;
-   } 
-   .namerace{
-    border: solid 2px red none;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bolder;
-   } 
-   .servernome{color: #ccc; width: 10vh;
-     text-align: center; display: inline;
-  border: solid 2px gold ; margin-left: 2%; position: absolute; margin-top: -50px;}
-.trackName{border: solid 2px blue none; width: 10%; overflow: hidden;}
-.sessiontype{border: solid 2px white none; width: 10%; position:absolute; overflow: hidden; display: inline;}
-  .penalty{border: solid 2px green none ; text-align: start; color: orange;
-    position: absolute; width: 145px; height: 20px; margin-left:65%;  }
-    .best{border: solid 2px gold none; width: 20%; text-align:start; margin-left: 35%;
-       position:relative; color: rgb(238, 10, 238); animation: best 2s infinite;}
-       
-       @keyframes best {
-        0% {color: violet;}
-        100% {color: transparent;}
-       }
+    .penalty_Type {
+      color: red;
+      margin-left: auto;
+    }
 
-       #home{ width: 10%; height: 2%; position: absolute; color: white; background-color: #222;
-        margin-top: -65px; margin-left: 40%; border: solid 1px #ccc; font-weight: bolder;}
+    .header {
+      font-size: 18px;
+      font-weight: bold;
+      padding: 10px 12px;
+      background: rgb(255, 0, 0);
+      border-bottom: 2px solid #999;
+    }
 
-        #classifica{ width: 10%; height: 2%; position: absolute; color: white; background-color: #222;
-        margin-top: -65px; margin-left: 52%; border: solid 1px #ccc; font-weight: bolder;}
+    #leaderboard {
+      margin-left: 15px;
+      margin-top: 100px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      overflow: hidden;
+    }
 
-      /* .penalty_name{ border : solid 2px gold;  color: red; margin-left: 95%; position: absolute;}*/
-       .penalty_Type{border :solid 2px green none; color: red; margin-left: 79%; position: absolute; }
-  
- /* @media (max-width: 768px) {
-  .leaderboard {
-    width: 90vw;                   occupa il 90% della larghezza visibile 
-    font-size: 20px;
-    padding: 20px;
-    border-left: 8px solid red;
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    background-color: #000;
-  }
+    .namerace {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bolder;
+    }
 
-  .header {
-    font-size: 22px;
-    text-align: left;
-    margin-bottom: 12px;
-  }
+    .serverName {
+      color: #ccc;
+      text-align: center;
+      margin-bottom: 10px;
+    }
 
-  .row {
-    font-size: 20px;
-    padding: 15px;
-    margin-left: 25px;
-    display: inline-flex;
-  }
+    #home, #classifica {
+      width: 10%;
+      height: 2%;
+      position: absolute;
+      color: white;
+      background-color: #222;
+      border: 1px solid #ccc;
+      font-weight: bolder;
+      top: 15px;
+    }
 
-  .pos {
-    width: 32px;
-    font-size: 20px;
-  }
+    #home {
+      left: 40%;
+    }
 
-  .driver {
-    font-size: 21px;
-  }
-
-  .time {
-    font-size: 19px;
-  }
-
-  .compound {
-    font-size: 17px;
-    padding: 2px 6px;
-  }
-
-  .in-pit {
-    font-size: 18px;
-  }
-}*/
-
- 
-</style>
-
-
-
+    #classifica {
+      left: 52%;
+    }
+  </style>
 </head>
 <body>
- <a  href="index.html"><button id="home">HOME</button></a>
-  <a  href="classifica.html"><button id="classifica">CLASSIFICA</button></a>
+
+  <a href="index.html"><button id="home">HOME</button></a>
+  <a href="classifica.html"><button id="classifica">CLASSIFICA</button></a>
 
   <div id="leaderboard">
-    <div class="header"></div>
-    <div class=""></div>
-    <!-- Qui andrà la classifica -->
+    <div class="header">Classifica Gara</div>
   </div>
 
   <script>
+    // Funzione per formattare tempo in ms (se serve)
+    function formatTime(ms) {
+      if (!ms || ms <= 0) return "-";
+      const minutes = Math.floor(ms / 60000);
+      const seconds = Math.floor((ms % 60000) / 1000);
+      const milliseconds = ms % 1000;
+      return `${minutes}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
+    }
+
     fetch('files.json')
       .then(res => res.json())
       .then(files => {
@@ -203,48 +141,55 @@
           fetch(filename)
             .then(res => res.json())
             .then(data => {
-              let html = `<h3 class="namerace">${filename}</h3> 
-                 <h3 class="serverName">${data.serverName}</h3> `;
-     
-     /* <h3 class="sessiontype">${data.sessionType}</h3>*/
-    /* <h3 class="best"> Best Lap  ${data.sessionResult.bestLap}<h3>*/  
+             let html = `
+                <h3 class="namerace">${filename.replace('.json', '').toUpperCase()}</h3>
+                <h4 class="serverName">${data.serverName || "Nome server non disponibile"}</h4>
+              `;
 
+              data.sessionResult.leaderBoardLines.forEach(pilota => {
+                const penaltyData = data.penalties?.find(p => p.carId === pilota.car.carId);
 
-      
-    
-                data.sessionResult.leaderBoardLines.forEach(pilota => {
+                const nomePilota = pilota.driverName || "Nome non disponibile";
 
-                   const penaltyData = data.penalties?.find(p => p.carId === pilota.carId);
+               const bestLapTime = typeof pilota.timing.bestLap === 'number'
+                  ? formatTime(pilota.timing.bestLap)
+                  : pilota.timing.bestLap || "-";
+
+                const gap = typeof pilota.timing.gap === 'number'
+                  ? formatTime(pilota.timing.gap)
+                  : pilota.timing.gap || "-";
+
+                const laps = pilota.timing?.laps ?? "-";
+                const car = pilota.car.teamName || pilota.car.carModel || "Auto sconosciuta";
+                const penaltiesTime = pilota.penalties || 0;
+                const penaltyType = penaltyData ? penaltyData.penaltyType : "";
+
                 html += `
                   <div class="row">
-              
                     <div class="pos">${pilota.position}</div>
-                    <div class="driver">${pilota.driverName}</div>
-                    <div class="time">${pilota.bestLapTime}</div>
-                        <div class="gap"> +${pilota.gap}</div>
-                         <div class="laps"> laps${pilota.laps}</div>
-                          <div class="car">${pilota.car}</div>
-                          <div class="penalty">+${pilota.penaltiesTime} s penalty </div>
-                          <div class="penalty_Type">${penaltyData ? penaltyData.penaltyType : ""}</div>
-                           </div>
-                 `;
-                 
-     /* <div class="penalty_name">${penaltyData ? penaltyData.reason : ""}</div>*/
-
-                 
-    
- 
+                    <div class="driver">${nomePilota}</div>
+                    <div class="time">${bestLapTime}</div>
+                    <div class="gap">+${gap}</div>
+                    <div class="laps">laps ${laps}</div>
+                    <div class="car">${car}</div>
+                    <div class="penalty">+${penaltiesTime}s penalty</div>
+                    <div class="penalty_Type">${penaltyType}</div>
+                  </div>
+                `;
               });
 
               container.innerHTML += html;
+            })
+            .catch(err => {
+              console.error(`Errore caricando il file ${filename}:`, err);
+              container.innerHTML += `<p style="color:red">Errore caricando ${filename}</p>`;
             });
         });
+      })
+      .catch(err => {
+        console.error("Errore nel caricamento di files.json:", err);
+        document.getElementById('leaderboard').innerHTML = "<p style='color:red'>Errore nel caricamento dei file</p>";
       });
-
-  
-         
-   
-
   </script>
 </body>
 </html>
