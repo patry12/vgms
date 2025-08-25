@@ -9,31 +9,12 @@
 </head>
 <body>
 
-    <a href="index.html" class="homebtn">HOME</a>
+  
+  <a href="pgacc.html" class="btnhome"></a>
 
-  <h1 id="sessionTitle">Sessione</h1>
-<h2 id="serverName">Server</h2>
-
-
-  <table id="resultsTable">
-    <thead>
-      <tr>
-        <th>Pos</th>
-        <th>Pilota</th>
-        <th>Numero</th>
-        <th>Auto</th>
-        <th class="bestlap">Best Lap</th>
-        <th class="totaltime">Tempo Totale</th>
-        <th class="giri">Giri</th>
-        <th class="timeracepilota">Time race Pilota</th>
-        <th class="pitstop">Pitstop </th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div id="gareContainer"></div> <!-- Dove verranno inserite le tabelle -->
 
   <script>
-    // Converte millisecondi in mm:ss.mmm
     function msToTime(ms) {
       if (!ms || ms >= 2147483647) return 'N/A';
       const min = Math.floor(ms / 60000);
@@ -42,43 +23,73 @@
       return `${min}:${sec.toString().padStart(2, '0')}.${msec.toString().padStart(3, '0')}`;
     }
 
-    fetch('monza_1.json')
+    fetch('files.json')
       .then(res => res.json())
-      .then(data => {
-        
+      .then(fileData => {
+        const fileList = fileData.files;
 
-        document.getElementById('sessionTitle').textContent = `Sessione: ${data.sessionType} - ${data.trackName}`;
-        document.getElementById('serverName').textContent = `Server: ${data.serverName}`;
+        fileList.forEach(fileName => {
+          fetch(fileName)
+            .then(res => res.json())
+            .then(data => {
+              const container = document.getElementById('gareContainer');
 
-        const tbody = document.querySelector('#resultsTable tbody');
-        const entries = data.sessionResult.leaderBoardLines;
+              // Crea una sezione per la gara
+              const section = document.createElement('section');
+              section.classList.add('gara');
 
-         
+              // Titolo della sessione
+              const title = document.createElement('h2');
+              title.textContent = `Sessione: ${data.sessionType} - ${data.trackName} | Server: ${data.serverName}`;
+              section.appendChild(title);
 
-        entries.forEach((entry, index) => {
-          const driver = entry.currentDriver;
-          const timing = entry.timing;
-          const car = entry.car;
-          
+              // Crea tabella
+              const table = document.createElement('table');
+              table.innerHTML = `
+                <thead>
+                  <tr>
+                    <th>Pos</th>
+                    <th>Pilota</th>
+                    <th>Numero</th>
+                    <th>Auto</th>
+                    <th class="bestlap">Best Lap</th>
+                    <th class="totaltime">Tempo Totale</th>
+                    <th class="giri">Giri</th>
+                    <th class="pitstop">Pitstop</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              `;
+              const tbody = table.querySelector('tbody');
 
-          const row = document.createElement('tr');
-          row.innerHTML = `
-           
-            <td class="position">${index + 1}</td>
-            <td>${driver.firstName.charAt(0)}. ${driver.lastName}</td>
-            <td>${car.raceNumber}</td>
-            <td>${car.carGroup}</td>
-            <td class="bestlap">${msToTime(timing.bestLap)}</td>
-            <td class="totaltime">${msToTime(timing.totalTime)}</td>
-            <td>${timing.lapCount}</td>
-            <td>${entry.driverTotalTimes.map(msToTime).join(', ')}</td>
-            <td>${entry.missingMandatoryPitstop}</td>
-          `;
-          tbody.appendChild(row);
+              // Riempie la tabella con i dati
+              const entries = data.sessionResult.leaderBoardLines;
+              entries.forEach((entry, index) => {
+                const driver = entry.currentDriver;
+                const timing = entry.timing;
+                const car = entry.car;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                  <td class="position">${index + 1}</td>
+                  <td>${driver.firstName.charAt(0)}. ${driver.lastName}</td>
+                  <td>${car.raceNumber}</td>
+                  <td>${car.carGroup}</td>
+                  <td class="bestlap">${msToTime(timing.bestLap)}</td>
+                  <td class="totaltime">${msToTime(timing.totalTime)}</td>
+                  <td>${timing.lapCount}</td>
+                  <td>${entry.missingMandatoryPitstop}</td>
+                `;
+                tbody.appendChild(row);
+              });
+
+              section.appendChild(table);
+              container.appendChild(section);
+            })
+            .catch(err => console.error(`Errore nel caricamento di ${fileName}:`, err));
         });
       })
-      .catch(err => console.error('Errore nel caricamento del JSON:', err));
+      .catch(err => console.error('Errore nel caricamento di files.json:', err));
   </script>
-
 </body>
 </html>
