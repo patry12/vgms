@@ -1,25 +1,2894 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>nav</title>
-    <link rel="stylesheet" href="style.css"> <!-- Collegamento CSS -->
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
+
+<title>Simracing Setup 3D</title>
+
+<style>
+
+/* ================================================= */
+/* BASE */
+/* ================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background: #050505;
+    color: white;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    touch-action: none;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+
+/* ================================================= */
+/* VIEWER */
+/* ================================================= */
+
+#viewer {
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #171717 0%,
+            #080808 45%,
+            #030303 100%
+        );
+
+    overflow: hidden;
+}
+
+#viewer canvas {
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* ================================================= */
+/* TITOLO */
+/* ================================================= */
+
+#title {
+
+    position: fixed;
+
+    top: 14px;
+    left: 16px;
+
+    z-index: 40;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    letter-spacing: .3px;
+
+    text-shadow:
+        0 2px 8px #000;
+}
+
+
+/* ================================================= */
+/* TOOLBAR */
+/* ================================================= */
+
+#toolbar {
+
+    position: fixed;
+
+    top: 12px;
+    right: 12px;
+
+    z-index: 50;
+
+    display: flex;
+
+    gap: 6px;
+
+    flex-wrap: wrap;
+
+    justify-content: flex-end;
+}
+
+.toolButton {
+
+    border: 1px solid #444;
+
+    background:
+        rgba(20,20,20,.9);
+
+    color: white;
+
+    padding:
+        9px 12px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+
+    backdrop-filter:
+        blur(8px);
+
+    transition:
+        .15s ease;
+}
+
+.toolButton:hover {
+
+    background: #292929;
+
+}
+
+.toolButton:active {
+
+    transform:
+        scale(.96);
+}
+
+.toolButton.active {
+
+    background:
+        #d4a017;
+
+    color: #000;
+
+    border-color:
+        #d4a017;
+}
+
+
+/* ================================================= */
+/* PANNELLO */
+/* ================================================= */
+
+#panel {
+
+    position: fixed;
+
+    top: 54px;
+    left: 12px;
+
+    z-index: 30;
+
+    width: 320px;
+
+    max-width:
+        calc(100vw - 24px);
+
+    max-height:
+        calc(100vh - 68px);
+
+    overflow-y: auto;
+
+    padding: 12px;
+
+    background:
+        rgba(13,13,13,.94);
+
+    border:
+        1px solid #333;
+
+    border-radius:
+        14px;
+
+    box-shadow:
+        0 15px 50px
+        rgba(0,0,0,.65);
+
+    backdrop-filter:
+        blur(14px);
+
+    transition:
+        transform .25s ease,
+        opacity .25s ease;
+}
+
+#panel.hidden {
+
+    transform:
+        translateX(
+            calc(-100% - 30px)
+        );
+
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+/* ================================================= */
+/* HEADER */
+/* ================================================= */
+
+.panelHeader {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+}
+
+.panelTitle {
+
+    font-size: 17px;
+
+    font-weight: bold;
+}
+
+#closePanel {
+
+    width: 30px;
+    height: 30px;
+
+    padding: 0;
+
+    border: 0;
+
+    border-radius: 7px;
+
+    background: #333;
+
+    color: white;
+
+    cursor: pointer;
+}
+
+
+/* ================================================= */
+/* STATO ATTIVO */
+/* ================================================= */
+
+#activeInfo {
+
+    margin-bottom: 10px;
+
+    padding: 9px 10px;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(212,160,23,.18),
+            rgba(212,160,23,.05)
+        );
+
+    border-left:
+        3px solid #d4a017;
+}
+
+#activeInfoTitle {
+
+    color: #d4a017;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    text-transform: uppercase;
+
+    margin-bottom: 3px;
+}
+
+#activeInfoText {
+
+    font-size: 12px;
+
+    color: #ddd;
+}
+
+
+/* ================================================= */
+/* CATEGORIE */
+/* ================================================= */
+
+.category {
+
+    margin-top: 10px;
+
+    padding:
+        10px 9px;
+
+    border:
+        1px solid #292929;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255,255,255,.025);
+}
+
+.categoryHeader {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 10px;
+}
+
+.categoryIcon {
+
+    width: 27px;
+    height: 27px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    background:
+        rgba(212,160,23,.15);
+
+    font-size: 14px;
+}
+
+.categoryTitle {
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    color: #d4a017;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        .5px;
+}
+
+
+/* ================================================= */
+/* PARAMETRO */
+/* ================================================= */
+
+.parameter {
+
+    padding:
+        8px 4px;
+
+    margin-bottom: 5px;
+
+    border-radius: 8px;
+
+    transition:
+        background .15s ease;
+}
+
+.parameter.active {
+
+    background:
+        rgba(212,160,23,.08);
+}
+
+.parameterTop {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    gap: 10px;
+
+    margin-bottom: 7px;
+}
+
+.parameterName {
+
+    font-size: 13px;
+
+    color: #eee;
+}
+
+.parameterValue {
+
+    min-width: 48px;
+
+    text-align: right;
+
+    color: #d4a017;
+
+    font-weight: bold;
+
+    font-size: 13px;
+}
+
+.parameterDescription {
+
+    margin-top: 5px;
+
+    color: #888;
+
+    font-size: 10px;
+
+    line-height: 1.3;
+}
+
+
+/* ================================================= */
+/* RANGE */
+/* ================================================= */
+
+input[type="range"] {
+
+    width: 100%;
+
+    height: 20px;
+
+    appearance: none;
+
+    background: transparent;
+
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+
+    height: 5px;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d4a017,
+            #7d5d0c
+        );
+}
+
+input[type="range"]::-webkit-slider-thumb {
+
+    appearance: none;
+
+    width: 18px;
+    height: 18px;
+
+    margin-top: -6px;
+
+    border-radius: 50%;
+
+    border:
+        2px solid white;
+
+    background:
+        #d4a017;
+
+    box-shadow:
+        0 0 8px
+        rgba(212,160,23,.6);
+}
+
+input[type="range"]::-moz-range-track {
+
+    height: 5px;
+
+    border-radius: 10px;
+
+    background: #555;
+}
+
+input[type="range"]::-moz-range-progress {
+
+    height: 5px;
+
+    border-radius: 10px;
+
+    background: #d4a017;
+}
+
+input[type="range"]::-moz-range-thumb {
+
+    width: 18px;
+    height: 18px;
+
+    border-radius: 50%;
+
+    border:
+        2px solid white;
+
+    background:
+        #d4a017;
+}
+
+
+/* ================================================= */
+/* SPIEGAZIONE */
+/* ================================================= */
+
+#explanation {
+
+    margin-top: 10px;
+
+    padding: 11px;
+
+    border-radius: 9px;
+
+    background:
+        rgba(212,160,23,.07);
+
+    border:
+        1px solid
+        rgba(212,160,23,.2);
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+    color: #ccc;
+}
+
+#explanation b {
+
+    color: #d4a017;
+}
+
+
+/* ================================================= */
+/* LEGENDA 3D */
+/* ================================================= */
+
+#visualGuide {
+
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 15px;
+
+    transform:
+        translateX(-50%);
+
+    z-index: 20;
+
+    padding:
+        8px 12px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(0,0,0,.72);
+
+    border:
+        1px solid #333;
+
+    color: #ddd;
+
+    font-size: 11px;
+
+    text-align: center;
+
+    pointer-events: none;
+
+    white-space: nowrap;
+}
+
+
+/* ================================================= */
+/* INFO */
+/* ================================================= */
+
+#info {
+
+    position: fixed;
+
+    right: 12px;
+
+    bottom: 12px;
+
+    z-index: 20;
+
+    padding:
+        7px 10px;
+
+    max-width: 45%;
+
+    border-radius: 7px;
+
+    background:
+        rgba(0,0,0,.65);
+
+    color: #aaa;
+
+    font-size: 10px;
+
+    text-align: right;
+}
+
+
+/* ================================================= */
+/* BADGE PARAMETRO */
+/* ================================================= */
+
+#parameterBadge {
+
+    position: fixed;
+
+    left: 50%;
+
+    top: 58px;
+
+    transform:
+        translateX(-50%);
+
+    z-index: 25;
+
+    display: none;
+
+    padding:
+        8px 12px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(212,160,23,.92);
+
+    color: #000;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    box-shadow:
+        0 5px 20px
+        rgba(0,0,0,.4);
+}
+
+
+/* ================================================= */
+/* MOBILE */
+/* ================================================= */
+
+@media (max-width: 600px) {
+
+    #title {
+
+        top: 10px;
+        left: 11px;
+
+        font-size: 14px;
+
+    }
+
+    #toolbar {
+
+        top: 8px;
+        right: 8px;
+
+    }
+
+    .toolButton {
+
+        padding:
+            8px 9px;
+
+        font-size: 11px;
+
+    }
+
+
+    #panel {
+
+    top: auto;
+    bottom: 8px;
+    left: 8px;
+
+    width: 295px;
+
+    max-width:
+        calc(100vw - 16px);
+
+    max-height:
+        42vh;
+
+    padding: 9px;
+
+    border-radius: 12px;
+}
+
+      .category {
+
+        padding:
+            8px 7px;
+
+    }
+
+    .parameter {
+
+        padding:
+            6px 3px;
+
+    }
+
+    .parameterDescription {
+
+        display: none;
+
+    }
+
+    #visualGuide {
+
+        bottom: 10px;
+
+        max-width:
+            90vw;
+
+        white-space:
+            normal;
+
+        font-size: 10px;
+
+    }
+
+    #info {
+
+        display: none;
+
+    }
+
+}
+
+
+/* ================================================= */
+/* SCROLLBAR */
+/* ================================================= */
+
+#panel::-webkit-scrollbar {
+
+    width: 5px;
+}
+
+#panel::-webkit-scrollbar-thumb {
+
+    background: #444;
+
+    border-radius: 10px;
+}
+
+</style>
 
 </head>
+
+
 <body>
-  <div id="menu">☰</div>
-  <ul id="ul">
-    <a id="discord"  href="#"></a>
-   </ul>
 
 
-   <div id="conteiner_rf2"></div>
-   <a href="pgacc.html"><div id="conteiner_acc"></div></a>
-   <div id="conteiner_lmu"></div>
+<!-- ================================================= -->
+<!-- VIEWER -->
+<!-- ================================================= -->
 
-   <div id="conteiner_end">SPX VIRTUAL RACING TEAM</div>
+<div id="viewer"></div>
 
-<script src="script.js"></script> <!-- JS esterno -->
+
+<!-- ================================================= -->
+<!-- TITOLO -->
+<!-- ================================================= -->
+
+<div id="title">
+    🏎️ Simracing Setup 3D
+</div>
+
+
+<!-- ================================================= -->
+<!-- TOOLBAR -->
+<!-- ================================================= -->
+
+<div id="toolbar">
+
+    <button
+        class="toolButton"
+        id="panelBtn">
+
+        ⚙ Setup
+
+    </button>
+
+    <button
+        class="toolButton"
+        id="view3Btn">
+
+        ◇ 3/4
+
+    </button>
+
+    <button
+        class="toolButton"
+        id="frontViewBtn">
+
+        ↑ Anteriore
+
+    </button>
+
+    <button
+        class="toolButton"
+        id="rearViewBtn">
+
+        ↓ Posteriore
+
+    </button>
+
+    <button
+        class="toolButton"
+        id="resetBtn">
+
+        ↩ Reset
+
+    </button>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- BADGE -->
+<!-- ================================================= -->
+
+<div id="parameterBadge">
+    Modifica attiva
+</div>
+
+
+<!-- ================================================= -->
+<!-- PANNELLO -->
+<!-- ================================================= -->
+
+<div id="panel">
+
+    <div class="panelHeader">
+
+        <div class="panelTitle">
+            Setup vettura
+        </div>
+
+        <button id="closePanel">
+            ✕
+        </button>
+
+    </div>
+
+
+    <!-- STATO -->
+
+    <div id="activeInfo">
+
+        <div id="activeInfoTitle">
+            Zona selezionata
+        </div>
+
+        <div id="activeInfoText">
+            Seleziona un parametro
+            per vedere cosa cambia sulla vettura.
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- RUOTE ANTERIORI -->
+    <!-- ================================================= -->
+
+    <div class="category">
+
+        <div class="categoryHeader">
+
+            <div class="categoryIcon">
+                🛞
+            </div>
+
+            <div class="categoryTitle">
+                Ruote anteriori
+            </div>
+
+        </div>
+
+
+        <!-- CAMBER -->
+
+        <div
+            class="parameter"
+            id="parameterCamber">
+
+            <div class="parameterTop">
+
+                <span class="parameterName">
+                    Camber
+                </span>
+
+                <span
+                    class="parameterValue"
+                    id="camberValue">
+
+                    -2.0°
+
+                </span>
+
+            </div>
+
+            <input
+                id="camber"
+                type="range"
+                min="-6"
+                max="2"
+                step="0.1"
+                value="-2">
+
+            <div class="parameterDescription">
+
+                Inclinazione verticale della ruota.
+                Più negativo = parte superiore verso l'interno.
+
+            </div>
+
+        </div>
+
+
+        <!-- TOE -->
+
+        <div
+            class="parameter"
+            id="parameterToe">
+
+            <div class="parameterTop">
+
+                <span class="parameterName">
+                    Toe
+                </span>
+
+                <span
+                    class="parameterValue"
+                    id="toeValue">
+
+                    0.0°
+
+                </span>
+
+            </div>
+
+            <input
+                id="toe"
+                type="range"
+                min="-3"
+                max="3"
+                step="0.1"
+                value="0">
+
+            <div class="parameterDescription">
+
+                Direzione delle ruote vista dall'alto.
+                Influenza risposta e stabilità.
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- ALTEZZA -->
+    <!-- ================================================= -->
+
+    <div class="category">
+
+        <div class="categoryHeader">
+
+            <div class="categoryIcon">
+                📏
+            </div>
+
+            <div class="categoryTitle">
+                Altezza vettura
+            </div>
+
+        </div>
+
+
+        <div
+            class="parameter"
+            id="parameterHeight">
+
+            <div class="parameterTop">
+
+                <span class="parameterName">
+                    Ride Height
+                </span>
+
+                <span
+                    class="parameterValue"
+                    id="heightValue">
+
+                    0 mm
+
+                </span>
+
+            </div>
+
+            <input
+                id="height"
+                type="range"
+                min="-30"
+                max="30"
+                step="1"
+                value="0">
+
+            <div class="parameterDescription">
+
+                Altezza rispetto al setup di base.
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- AERODINAMICA -->
+    <!-- ================================================= -->
+
+    <div class="category">
+
+        <div class="categoryHeader">
+
+            <div class="categoryIcon">
+                🪽
+            </div>
+
+            <div class="categoryTitle">
+                Aerodinamica
+            </div>
+
+        </div>
+
+
+        <div
+            class="parameter"
+            id="parameterWing">
+
+            <div class="parameterTop">
+
+                <span class="parameterName">
+                    Ala posteriore
+                </span>
+
+                <span
+                    class="parameterValue"
+                    id="wingValue">
+
+                    5°
+
+                </span>
+
+            </div>
+
+            <input
+                id="wing"
+                type="range"
+                min="0"
+                max="15"
+                step="1"
+                value="5">
+
+            <div class="parameterDescription">
+
+                Più incidenza = più carico posteriore
+                e normalmente più resistenza.
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- FRENI -->
+    <!-- ================================================= -->
+
+    <div class="category">
+
+        <div class="categoryHeader">
+
+            <div class="categoryIcon">
+                🛑
+            </div>
+
+            <div class="categoryTitle">
+                Freni
+            </div>
+
+        </div>
+
+
+        <div
+            class="parameter"
+            id="parameterBrake">
+
+            <div class="parameterTop">
+
+                <span class="parameterName">
+                    Brake Bias
+                </span>
+
+                <span
+                    class="parameterValue"
+                    id="brakeValue">
+
+                    60% F
+
+                </span>
+
+            </div>
+
+            <input
+                id="brake"
+                type="range"
+                min="45"
+                max="70"
+                step="1"
+                value="60">
+
+            <div class="parameterDescription">
+
+                Distribuzione della frenata.
+                F = anteriore.
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- SPIEGAZIONE -->
+    <!-- ================================================= -->
+
+    <div id="explanation">
+
+        Seleziona un parametro per visualizzare
+        la spiegazione e vedere sulla vettura
+        quale zona viene modificata.
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- GUIDA VISIVA -->
+<!-- ================================================= -->
+
+<div id="visualGuide">
+
+    🟡 Zona evidenziata = componente modificato
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- INFO -->
+<!-- ================================================= -->
+
+<div id="info">
+    Caricamento GLB...
+</div>
+
+
+<!-- ================================================= -->
+<!-- THREE.JS -->
+<!-- ================================================= -->
+
+<script type="importmap">
+
+{
+    "imports": {
+
+        "three":
+        "https://unpkg.com/three@0.180.0/build/three.module.js",
+
+        "three/addons/":
+        "https://unpkg.com/three@0.180.0/examples/jsm/"
+
+    }
+}
+
+</script>
+
+
+<script type="module">
+
+import * as THREE
+from "three";
+
+
+import {
+    GLTFLoader
+}
+from "three/addons/loaders/GLTFLoader.js";
+
+
+import {
+    OrbitControls
+}
+from "three/addons/controls/OrbitControls.js";
+
+
+// =====================================================
+// ELEMENTI
+// =====================================================
+
+const viewer =
+    document.getElementById("viewer");
+
+const panel =
+    document.getElementById("panel");
+
+const info =
+    document.getElementById("info");
+
+const explanation =
+    document.getElementById("explanation");
+
+const activeInfoText =
+    document.getElementById("activeInfoText");
+
+const parameterBadge =
+    document.getElementById("parameterBadge");
+
+
+// =====================================================
+// SCENA
+// =====================================================
+
+const scene =
+    new THREE.Scene();
+
+scene.background =
+    new THREE.Color("#050505");
+
+
+// =====================================================
+// CAMERA
+// =====================================================
+
+const camera =
+    new THREE.PerspectiveCamera(
+
+        50,
+
+        viewer.clientWidth /
+        viewer.clientHeight,
+
+        0.01,
+
+        1000
+
+    );
+
+camera.position.set(
+    5,
+    2.7,
+    5
+);
+
+
+// =====================================================
+// RENDERER
+// =====================================================
+
+const renderer =
+    new THREE.WebGLRenderer({
+
+        antialias: true
+
+    });
+
+renderer.setPixelRatio(
+
+    Math.min(
+        window.devicePixelRatio,
+        2
+    )
+
+);
+
+renderer.setSize(
+
+    viewer.clientWidth,
+    viewer.clientHeight
+
+);
+
+renderer.outputColorSpace =
+    THREE.SRGBColorSpace;
+
+renderer.shadowMap.enabled =
+    true;
+
+viewer.appendChild(
+    renderer.domElement
+);
+
+
+// =====================================================
+// LUCI
+// =====================================================
+
+const ambient =
+    new THREE.HemisphereLight(
+
+        0xffffff,
+        0x202020,
+        3
+
+    );
+
+scene.add(
+    ambient
+);
+
+
+const keyLight =
+    new THREE.DirectionalLight(
+
+        0xffffff,
+        5
+
+    );
+
+keyLight.position.set(
+    5,
+    8,
+    6
+);
+
+scene.add(
+    keyLight
+);
+
+
+const fillLight =
+    new THREE.DirectionalLight(
+
+        0x8da7ff,
+        2
+
+    );
+
+fillLight.position.set(
+    -5,
+    4,
+    -6
+);
+
+scene.add(
+    fillLight
+);
+
+
+const rimLight =
+    new THREE.DirectionalLight(
+
+        0xffcc66,
+        2
+
+    );
+
+rimLight.position.set(
+    0,
+    6,
+    -8
+);
+
+scene.add(
+    rimLight
+);
+
+
+// =====================================================
+// CONTROLLI
+// =====================================================
+
+const controls =
+    new OrbitControls(
+
+        camera,
+        renderer.domElement
+
+    );
+
+controls.enableDamping =
+    true;
+
+controls.dampingFactor =
+    .08;
+
+controls.enableRotate =
+    true;
+
+controls.enableZoom =
+    true;
+
+controls.enablePan =
+    false;
+
+controls.minDistance =
+    2;
+
+controls.maxDistance =
+    20;
+
+
+// =====================================================
+// MODELLO
+// =====================================================
+
+let model = null;
+
+let rearWing = null;
+
+const wheels = [];
+
+
+// =====================================================
+// STATO MODELLO
+// =====================================================
+
+const initial = {
+
+    position:
+        new THREE.Vector3(),
+
+    rotation:
+        new THREE.Euler(),
+
+    scale:
+        new THREE.Vector3()
+
+};
+
+
+// =====================================================
+// SETUP
+// =====================================================
+
+const setup = {
+
+    camber: -2,
+
+    toe: 0,
+
+    height: 0,
+
+    wing: 5,
+
+    brakeBias: 60
+
+};
+
+
+// =====================================================
+// MATERIALI ORIGINALI
+// =====================================================
+
+const originalMaterials =
+    new Map();
+
+
+// =====================================================
+// HIGHLIGHT
+// =====================================================
+
+const highlightMaterial =
+    new THREE.MeshStandardMaterial({
+
+        color: 0xd4a017,
+
+        emissive: 0x7a5500,
+
+        emissiveIntensity: .8,
+
+        metalness: .3,
+
+        roughness: .35
+
+    });
+
+
+// =====================================================
+// LOADER
+// =====================================================
+
+const loader =
+    new GLTFLoader();
+
+
+loader.load(
+
+    "./ms.glb",
+
+    function(gltf) {
+
+        model =
+            gltf.scene;
+
+        scene.add(
+            model
+        );
+
+
+        // ---------------------------------------------
+        // CENTRATURA
+        // ---------------------------------------------
+
+        model.updateMatrixWorld(
+            true
+        );
+
+        const box =
+            new THREE.Box3()
+                .setFromObject(model);
+
+        const center =
+            box.getCenter(
+                new THREE.Vector3()
+            );
+
+        const size =
+            box.getSize(
+                new THREE.Vector3()
+            );
+
+        model.position.sub(
+            center
+        );
+       
+      model.position.y += 2.0;
+
+        const maxSize =
+            Math.max(
+                size.x,
+                size.y,
+                size.z
+            );
+
+
+        if (maxSize > 0) {
+
+            model.scale.setScalar(
+                4 / maxSize
+            );
+
+        }
+
+
+        model.updateMatrixWorld(
+            true
+        );
+
+
+        // ---------------------------------------------
+        // STATO INIZIALE
+        // ---------------------------------------------
+
+        initial.position.copy(
+            model.position
+        );
+
+        initial.rotation.copy(
+            model.rotation
+        );
+
+        initial.scale.copy(
+            model.scale
+        );
+
+
+        // ---------------------------------------------
+        // MATERIALI
+        // ---------------------------------------------
+
+        saveOriginalMaterials(
+            model
+        );
+
+
+        // ---------------------------------------------
+        // COMPONENTI
+        // ---------------------------------------------
+
+        findWheels(
+            model
+        );
+
+        findRearWing(
+            model
+        );
+
+
+        // ---------------------------------------------
+        // CAMERA
+        // ---------------------------------------------
+
+        setCameraView(
+            "3"
+        );
+
+
+        info.textContent =
+            "✓ GLB caricato • " +
+            wheels.length +
+            " ruote";
+
+
+        updateSetup();
+
+    },
+
+
+    function(xhr) {
+
+        if (xhr.total > 0) {
+
+            const percent =
+                Math.round(
+                    xhr.loaded /
+                    xhr.total *
+                    100
+                );
+
+            info.textContent =
+                "Caricamento GLB " +
+                percent +
+                "%";
+
+        }
+
+    },
+
+
+    function(error) {
+
+        console.error(
+            error
+        );
+
+        info.textContent =
+            "✕ Errore caricamento ms.glb";
+
+    }
+
+);
+
+
+// =====================================================
+// SALVA MATERIALI
+// =====================================================
+
+function saveOriginalMaterials(root) {
+
+    root.traverse(
+        object => {
+
+            if (
+                object.isMesh &&
+                object.material
+            ) {
+
+                originalMaterials.set(
+                    object,
+                    object.material
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// TROVA RUOTE
+// =====================================================
+
+function findWheels(root) {
+
+    wheels.length = 0;
+
+    root.traverse(
+
+        object => {
+
+            if (
+                !object.name
+            )
+                return;
+
+
+            const name =
+                object.name
+                    .toLowerCase()
+                    .replace(/[\s-]+/g, "_");
+
+
+            const isWheel =
+
+                name.includes("wheel") ||
+                name.includes("ruota") ||
+                name.includes("tire") ||
+                name.includes("tyre") ||
+                name.includes("gomma") ||
+                name.includes("pneu");
+
+
+            if (!isWheel)
+                return;
+
+
+            wheels.push({
+
+                object,
+
+                originalRotation:
+                    object.rotation.clone(),
+
+                originalPosition:
+                    object.position.clone(),
+
+                side:
+                    detectSide(
+                        name,
+                        object
+                    ),
+
+                front:
+                    detectFront(
+                        name,
+                        object
+                    )
+
+            });
+
+        }
+
+    );
+
+
+    console.log(
+        "Ruote trovate:",
+        wheels
+    );
+
+}
+
+
+// =====================================================
+// LATO
+// =====================================================
+
+function detectSide(
+    name,
+    object
+) {
+
+    if (
+
+        /\b(left|lh)\b/.test(name) ||
+        /(^|_)(l)(_|$)/.test(name) ||
+        name.includes("left")
+
+    ) {
+
+        return "left";
+
+    }
+
+
+    if (
+
+        /\b(right|rh)\b/.test(name) ||
+        /(^|_)(r)(_|$)/.test(name) ||
+        name.includes("right")
+
+    ) {
+
+        return "right";
+
+    }
+
+
+    // fallback basato sulla posizione
+
+    const world =
+        new THREE.Vector3();
+
+    object.getWorldPosition(
+        world
+    );
+
+
+    return world.x < 0
+        ? "left"
+        : "right";
+
+}
+
+
+// =====================================================
+// ANTERIORE
+// =====================================================
+
+function detectFront(
+    name,
+    object
+) {
+
+    if (
+
+        name.includes("front") ||
+        name.includes("anter") ||
+        name.includes("anteriore") ||
+        name.includes("forward")
+
+    ) {
+
+        return true;
+
+    }
+
+
+    if (
+
+        name.includes("rear") ||
+        name.includes("back") ||
+        name.includes("post") ||
+        name.includes("posteriore")
+
+    ) {
+
+        return false;
+
+    }
+
+
+    /*
+     * Fallback:
+     * usa la posizione locale/world.
+     *
+     * L'asse longitudinale può variare
+     * in base al modello, quindi proviamo
+     * prima Z.
+     */
+
+    const world =
+        new THREE.Vector3();
+
+    object.getWorldPosition(
+        world
+    );
+
+
+    return world.z > 0;
+
+}
+
+
+// =====================================================
+// ALA
+// =====================================================
+
+function findRearWing(root) {
+
+    rearWing = null;
+
+    root.traverse(
+
+        object => {
+
+            if (
+                !object.name
+            )
+                return;
+
+
+            const name =
+                object.name.toLowerCase();
+
+
+            if (
+
+                name.includes("rearwing") ||
+                name.includes("rear_wing") ||
+                name.includes("spoiler") ||
+                name.includes("wing") ||
+                name.includes("ala")
+
+            ) {
+
+                rearWing =
+                    object;
+
+            }
+
+        }
+
+    );
+
+}
+
+
+// =====================================================
+// AGGIORNA SETUP
+// =====================================================
+
+function updateSetup() {
+
+    if (!model)
+        return;
+
+
+    applyCamber();
+
+    applyToe();
+
+    applyRideHeight();
+
+    applyWing();
+
+    updateLabels();
+
+}
+
+
+// =====================================================
+// CAMBER
+// =====================================================
+
+function applyCamber() {
+
+    const angle =
+        THREE.MathUtils.degToRad(
+            setup.camber
+        );
+
+
+    wheels.forEach(
+
+        wheel => {
+
+            if (!wheel.front)
+                return;
+
+
+            const sign =
+                wheel.side === "right"
+                    ? -1
+                    : 1;
+
+
+            wheel.object.rotation.z =
+
+                wheel.originalRotation.z +
+
+                angle *
+                sign;
+
+        }
+
+    );
+
+}
+
+
+// =====================================================
+// TOE
+// =====================================================
+
+function applyToe() {
+
+    const angle =
+        THREE.MathUtils.degToRad(
+            setup.toe
+        );
+
+
+    wheels.forEach(
+
+        wheel => {
+
+            if (!wheel.front)
+                return;
+
+
+            const sign =
+                wheel.side === "right"
+                    ? -1
+                    : 1;
+
+
+            wheel.object.rotation.y =
+
+                wheel.originalRotation.y +
+
+                angle *
+                sign;
+
+        }
+
+    );
+
+}
+
+
+// =====================================================
+// ALTEZZA
+// =====================================================
+
+function applyRideHeight() {
+
+    const factor =
+        setup.height /
+        100;
+
+
+    model.position.y =
+
+        initial.position.y +
+
+        factor;
+
+}
+
+
+// =====================================================
+// ALA
+// =====================================================
+
+function applyWing() {
+
+    if (!rearWing)
+        return;
+
+
+    const angle =
+        THREE.MathUtils.degToRad(
+            setup.wing
+        );
+
+
+    rearWing.rotation.x =
+        angle;
+
+}
+
+
+// =====================================================
+// LABEL
+// =====================================================
+
+function updateLabels() {
+
+    document.getElementById(
+        "camberValue"
+    ).textContent =
+        setup.camber.toFixed(1) + "°";
+
+
+    document.getElementById(
+        "toeValue"
+    ).textContent =
+        setup.toe.toFixed(1) + "°";
+
+
+    document.getElementById(
+        "heightValue"
+    ).textContent =
+        setup.height + " mm";
+
+
+    document.getElementById(
+        "wingValue"
+    ).textContent =
+        setup.wing + "°";
+
+
+    document.getElementById(
+        "brakeValue"
+    ).textContent =
+        setup.brakeBias + "% F";
+
+}
+
+
+// =====================================================
+// SPIEGAZIONI
+// =====================================================
+
+const explanations = {
+
+    camber:
+
+        "<b>Camber</b><br><br>" +
+
+        "Modifica l'inclinazione della ruota " +
+        "vista frontalmente.<br><br>" +
+
+        "🟡 Le ruote anteriori vengono evidenziate " +
+        "per mostrarti la zona interessata.<br><br>" +
+
+        "<b>Negativo:</b> parte superiore della " +
+        "ruota verso l'interno.",
+
+
+    toe:
+
+        "<b>Toe</b><br><br>" +
+
+        "Modifica l'orientamento delle ruote " +
+        "anteriori visto dall'alto.<br><br>" +
+
+        "🟡 Le ruote anteriori vengono evidenziate " +
+        "e la loro direzione cambia sulla 3D.",
+
+
+    height:
+
+        "<b>Ride Height</b><br><br>" +
+
+        "Sposta verticalmente tutta la vettura " +
+        "rispetto al setup iniziale.<br><br>" +
+
+        "Valore negativo = vettura più bassa.<br>" +
+
+        "Valore positivo = vettura più alta.",
+
+
+    wing:
+
+        "<b>Ala posteriore</b><br><br>" +
+
+        "Modifica l'inclinazione dell'ala posteriore.<br><br>" +
+
+        "Più gradi significano generalmente " +
+        "più carico aerodinamico e più resistenza.",
+
+
+    brake:
+
+        "<b>Brake Bias</b><br><br>" +
+
+        "Modifica la distribuzione della forza " +
+        "frenante tra anteriore e posteriore.<br><br>" +
+
+        "Il parametro non modifica fisicamente " +
+        "il GLB perché rappresenta una regolazione " +
+        "virtuale dell'impianto frenante."
+
+};
+
+
+// =====================================================
+// HIGHLIGHT
+// =====================================================
+
+function clearHighlights() {
+
+    originalMaterials.forEach(
+
+        (material, object) => {
+
+            if (
+                object &&
+                object.isMesh
+            ) {
+
+                object.material =
+                    material;
+
+            }
+
+        }
+
+    );
+
+}
+
+
+// =====================================================
+// HIGHLIGHT RUOTE ANTERIORI
+// =====================================================
+
+function highlightFrontWheels() {
+
+    clearHighlights();
+
+
+    wheels.forEach(
+
+        wheel => {
+
+            if (
+                !wheel.front
+            )
+                return;
+
+
+            highlightObject(
+                wheel.object
+            );
+
+        }
+
+    );
+
+}
+
+
+// =====================================================
+// HIGHLIGHT ALA
+// =====================================================
+
+function highlightWing() {
+
+    clearHighlights();
+
+
+    if (!rearWing)
+        return;
+
+
+    highlightObject(
+        rearWing
+    );
+
+}
+
+
+// =====================================================
+// HIGHLIGHT OGGETTO
+// =====================================================
+
+function highlightObject(object) {
+
+    object.traverse(
+
+        child => {
+
+            if (
+                child.isMesh
+            ) {
+
+                child.material =
+                    highlightMaterial;
+
+            }
+
+        }
+
+    );
+
+}
+
+
+// =====================================================
+// SELEZIONE PARAMETRO
+// =====================================================
+
+function selectParameter(
+    parameter
+) {
+
+    document
+        .querySelectorAll(".parameter")
+        .forEach(
+            element =>
+                element.classList.remove(
+                    "active"
+                )
+        );
+
+
+    const element =
+        document.getElementById(
+            "parameter" +
+            parameter.charAt(0).toUpperCase() +
+            parameter.slice(1)
+        );
+
+
+    if (element) {
+
+        element.classList.add(
+            "active"
+        );
+
+    }
+
+
+    clearHighlights();
+
+
+    if (
+        parameter === "camber" ||
+        parameter === "toe"
+    ) {
+
+        highlightFrontWheels();
+
+        activeInfoText.textContent =
+            parameter === "camber"
+                ? "Ruote anteriori • inclinazione"
+                : "Ruote anteriori • direzione";
+
+
+        parameterBadge.textContent =
+            parameter === "camber"
+                ? "🛞 Modifica Camber — ruote anteriori"
+                : "🛞 Modifica Toe — ruote anteriori";
+
+    }
+
+
+    if (
+        parameter === "height"
+    ) {
+
+        activeInfoText.textContent =
+            "Intera vettura • altezza da terra";
+
+        parameterBadge.textContent =
+            "📏 Modifica Ride Height";
+
+    }
+
+
+    if (
+        parameter === "wing"
+    ) {
+
+        highlightWing();
+
+        activeInfoText.textContent =
+            "Ala posteriore • carico aerodinamico";
+
+        parameterBadge.textContent =
+            "🪽 Modifica Ala posteriore";
+
+    }
+
+
+    if (
+        parameter === "brake"
+    ) {
+
+        activeInfoText.textContent =
+            "Impianto frenante • distribuzione";
+
+        parameterBadge.textContent =
+            "🛑 Modifica Brake Bias";
+
+    }
+
+
+    explanation.innerHTML =
+        explanations[
+            parameter
+        ];
+
+
+    parameterBadge.style.display =
+        "block";
+
+
+    setTimeout(
+
+        () => {
+
+            parameterBadge.style.display =
+                "none";
+
+        },
+
+        1800
+
+    );
+
+}
+
+
+// =====================================================
+// INPUT CAMBER
+// =====================================================
+
+document
+.getElementById("camber")
+.addEventListener(
+
+    "input",
+
+    event => {
+
+        setup.camber =
+            parseFloat(
+                event.target.value
+            );
+
+        selectParameter(
+            "camber"
+        );
+
+        updateSetup();
+
+    }
+
+);
+
+
+// =====================================================
+// INPUT TOE
+// =====================================================
+
+document
+.getElementById("toe")
+.addEventListener(
+
+    "input",
+
+    event => {
+
+        setup.toe =
+            parseFloat(
+                event.target.value
+            );
+
+        selectParameter(
+            "toe"
+        );
+
+        updateSetup();
+
+    }
+
+);
+
+
+// =====================================================
+// INPUT HEIGHT
+// =====================================================
+
+document
+.getElementById("height")
+.addEventListener(
+
+    "input",
+
+    event => {
+
+        setup.height =
+            parseFloat(
+                event.target.value
+            );
+
+        selectParameter(
+            "height"
+        );
+
+        updateSetup();
+
+    }
+
+);
+
+
+// =====================================================
+// INPUT WING
+// =====================================================
+
+document
+.getElementById("wing")
+.addEventListener(
+
+    "input",
+
+    event => {
+
+        setup.wing =
+            parseFloat(
+                event.target.value
+            );
+
+        selectParameter(
+            "wing"
+        );
+
+        updateSetup();
+
+    }
+
+);
+
+
+// =====================================================
+// INPUT BRAKE
+// =====================================================
+
+document
+.getElementById("brake")
+.addEventListener(
+
+    "input",
+
+    event => {
+
+        setup.brakeBias =
+            parseFloat(
+                event.target.value
+            );
+
+        selectParameter(
+            "brake"
+        );
+
+        updateLabels();
+
+    }
+
+);
+
+
+// =====================================================
+// RESET
+// =====================================================
+
+document
+.getElementById("resetBtn")
+.addEventListener(
+
+    "click",
+
+    () => {
+
+        setup.camber = -2;
+        setup.toe = 0;
+        setup.height = 0;
+        setup.wing = 5;
+        setup.brakeBias = 60;
+
+
+        document.getElementById(
+            "camber"
+        ).value =
+            -2;
+
+
+        document.getElementById(
+            "toe"
+        ).value =
+            0;
+
+
+        document.getElementById(
+            "height"
+        ).value =
+            0;
+
+
+        document.getElementById(
+            "wing"
+        ).value =
+            5;
+
+
+        document.getElementById(
+            "brake"
+        ).value =
+            60;
+
+
+        if (model) {
+
+            model.position.copy(
+                initial.position
+            );
+
+            model.rotation.copy(
+                initial.rotation
+            );
+
+            model.scale.copy(
+                initial.scale
+            );
+
+        }
+
+
+        clearHighlights();
+
+        updateSetup();
+
+        explanation.innerHTML =
+            "Setup ripristinato ai valori iniziali.";
+
+        activeInfoText.textContent =
+            "Seleziona un parametro per vedere cosa cambia sulla vettura.";
+
+        document
+            .querySelectorAll(".parameter")
+            .forEach(
+                element =>
+                    element.classList.remove(
+                        "active"
+                    )
+            );
+
+    }
+
+);
+
+
+// =====================================================
+// PANNELLO
+// =====================================================
+
+document
+.getElementById("panelBtn")
+.addEventListener(
+
+    "click",
+
+    () => {
+
+        panel.classList.toggle(
+            "hidden"
+        );
+
+    }
+
+);
+
+
+document
+.getElementById("closePanel")
+.addEventListener(
+
+    "click",
+
+    () => {
+
+        panel.classList.add(
+            "hidden"
+        );
+
+    }
+
+);
+
+
+// =====================================================
+// CAMERA
+// =====================================================
+
+function setCameraView(
+    type
+) {
+
+    if (!model)
+        return;
+
+
+    const distance =
+        5.5;
+
+
+    if (type === "3") {
+
+        camera.position.set(
+            distance,
+            2.8,
+            distance
+        );
+
+    }
+
+
+    if (type === "front") {
+
+        camera.position.set(
+            0,
+            1.8,
+            distance
+        );
+
+    }
+
+
+    if (type === "rear") {
+
+        camera.position.set(
+            0,
+            1.8,
+            -distance
+        );
+
+    }
+
+
+    controls.target.set(
+        0,
+        0,
+        0
+    );
+
+    controls.update();
+
+}
+
+
+// =====================================================
+// VISTE
+// =====================================================
+
+document
+.getElementById("view3Btn")
+.addEventListener(
+
+    "click",
+
+    () => {
+
+        setCameraView(
+            "3"
+        );
+
+    }
+
+);
+
+
+document
+.getElementById("frontViewBtn")
+.addEventListener(
+
+    "click",
+
+    () => {
+
+        setCameraView(
+            "front"
+        );
+
+    }
+
+);
+
+
+document
+.getElementById("rearViewBtn")
+.addEventListener(
+
+    "click",
+
+    () => {
+
+        setCameraView(
+            "rear"
+        );
+
+    }
+
+);
+
+
+// =====================================================
+// RENDER LOOP
+// =====================================================
+
+function animate() {
+
+    requestAnimationFrame(
+        animate
+    );
+
+
+    controls.update();
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+
+animate();
+
+
+// =====================================================
+// RESIZE
+// =====================================================
+
+window.addEventListener(
+
+    "resize",
+
+    () => {
+
+        const width =
+            viewer.clientWidth;
+
+        const height =
+            viewer.clientHeight;
+
+
+        camera.aspect =
+            width /
+            height;
+
+        camera.updateProjectionMatrix();
+
+
+        renderer.setSize(
+            width,
+            height
+        );
+
+    }
+
+);
+
+</script>
+
 </body>
+
 </html>
